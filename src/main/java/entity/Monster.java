@@ -1,12 +1,12 @@
 package entity;
 //basic monster class to build other monsters from
 public abstract class Monster {
-    protected String name;
+    protected final String name;
     protected int health;
     protected int attack;
     protected int strength;
     protected int defence;
-    protected String art;
+    protected final String art;
 
     // constructor for super
     public Monster(String name, int health, int attack, int strength, int defence, String art) {
@@ -19,7 +19,6 @@ public abstract class Monster {
     }
 
     // getters
-
     public String getName() {
         return name;
     }
@@ -45,12 +44,6 @@ public abstract class Monster {
     }
 
     //setters
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setHealth(int health) {
         this.health = health;
     }
@@ -65,10 +58,6 @@ public abstract class Monster {
 
     public void setDefence(int defence) {
         this.defence = defence;
-    }
-
-    public void setArt(String art) {
-        this.art = art;
     }
 
     // shared behavior
