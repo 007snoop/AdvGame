@@ -10,7 +10,7 @@ public class GoblinKing extends Monster {
                 5,
                 3,
                 """
-                        
+                        add art here.
                         """);
     }
 }
