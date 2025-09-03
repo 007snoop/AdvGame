@@ -4,13 +4,19 @@ import core.MonsterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Dungeon {
     private List<Room> room = new ArrayList<>();
+    private Random rand = new Random();
 
     public Dungeon(MonsterFactory mf, int roomCount) {
+        List<String> availableDesc = new ArrayList<>(List.of(Room.ROOM_DESC));
         for (int i = 0; i < roomCount; i++) {
-            room.add(new Room(mf));
+            if (availableDesc.isEmpty()) break;
+            int index = rand.nextInt(availableDesc.size());
+            String desc = availableDesc.remove(index);
+            room.add(new Room(desc, mf));
         }
     }
 
