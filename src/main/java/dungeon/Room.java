@@ -17,6 +17,8 @@ public class Room {
             "a crumbling stone chamber",
             "a narrow tunnel with eerie echoes",
             "an abandoned library full of dust"
+            // add more here
+
     };
 
     public Room( MonsterFactory mf) {
