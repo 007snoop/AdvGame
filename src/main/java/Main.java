@@ -1,9 +1,6 @@
-import core.CombatEngine;
 import core.MonsterFactory;
 import dungeon.Dungeon;
 import dungeon.Room;
-import encounters.Goblin;
-import entity.Monster;
 import entity.Player;
 
 public class Main {
@@ -12,9 +9,10 @@ public class Main {
         /*Monster goblin = new Goblin();*/
         MonsterFactory spawn = new MonsterFactory();
         Dungeon dungeon = new Dungeon(spawn, 5);
+        Room roomGrid = new Room("Test roomGrid", spawn, 8, 10);
 
 
-        System.out.println("Dungeon Rooms: \n");
+       /* System.out.println("Dungeon Rooms: \n");
 
         int roomNumber = 1;
 
@@ -23,7 +21,7 @@ public class Main {
             roomNumber++;
         }
 
-        System.out.println("\n--- Testing room encounters ---\n");
+        System.out.println("\n--- Testing roomGrid encounters ---\n");
         for (Room room : dungeon.getRoom()) {
             room.enter(player);
             if (!player.isAlive()) {
@@ -31,5 +29,12 @@ public class Main {
                 break;
             }
         }
+*/
+        System.out.println("Inital roomGrid: ");
+        roomGrid.display(player);
+
+        System.out.println("\nMove right");
+        player.move(1,0,roomGrid);
+        roomGrid.display(player);
     }
 }

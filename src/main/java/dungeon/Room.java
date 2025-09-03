@@ -102,17 +102,21 @@ public class Room {
     public void display(Player player) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if (y == player.getY() && player.getX()) {
+                if (y == player.getY() && x == player.getX()) {
                     System.out.print('@');
                     explored[y][x] = true;
-                } else if (!explored[y][x]) {
-                    System.out.print('?'); // fog
                 } else {
                     System.out.print(grid[y][x]);
                 }
             }
             System.out.println();
         }
+    }
+
+    public boolean isWalkable(int x, int y) {
+        if (x < 0 || x >= width || y < 0 || y >= height) return false;
+        char tile = grid[y][x];
+        return tile == '_';
     }
 
 }
