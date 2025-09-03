@@ -11,7 +11,6 @@ public class Goblin extends Monster {
         ,3
         ,1
         , """
-                                                                               ,      ,
                               /(.-""-.)\\
                           |\\  \\/      \\/  /|
                           | \\ / =.  .= \\ / |
