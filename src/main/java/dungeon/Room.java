@@ -67,6 +67,50 @@ public class Room {
         initializeGrid();
     }
 
+    public void setExplored(boolean[][] explored) {
+        this.explored = explored;
+    }
+
+    public void setGrid(char[][] grid) {
+        this.grid = grid;
+    }
+
+    public void setRand(Random rand) {
+        this.rand = rand;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public boolean[][] getExplored() {
+        return explored;
+    }
+
+    public char[][] getGrid() {
+        return grid;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public MonsterFactory getMf() {
+        return mf;
+    }
+
+    public Random getRand() {
+        return rand;
+    }
+
     public String getDesc() {
         return desc;
     }
