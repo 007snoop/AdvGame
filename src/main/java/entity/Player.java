@@ -75,7 +75,6 @@ public class Player {
     }
 
     // movement in room
-
     public void move(int dx, int dy, Room room) {
         int newX = x + dx;
         int newY = y + dy;
