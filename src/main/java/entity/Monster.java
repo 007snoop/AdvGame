@@ -1,12 +1,15 @@
 package entity;
+
+import encounters.Bandit;
+import encounters.Goblin;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 //basic monster class to build other monsters from
 public abstract class Monster {
-    protected final String name;
-    protected int health;
-    protected int attack;
-    protected int strength;
-    protected int defence;
-    protected final String art;
+    protected final String name, art;
+    protected int health,attack,strength,defence;
 
     // constructor for super
     public Monster(String name, int health, int attack, int strength, int defence, String art) {
@@ -22,40 +25,31 @@ public abstract class Monster {
     public String getName() {
         return name;
     }
-
     public int getHealth() {
         return health;
     }
-
     public int getAttack() {
         return attack;
     }
-
     public int getStrength() {
         return strength;
     }
-
     public int getDefence() {
         return defence;
     }
-
     public String getArt() {
         return art;
     }
-
     //setters
     public void setHealth(int health) {
         this.health = health;
     }
-
     public void setAttack(int attack) {
         this.attack = attack;
     }
-
     public void setStrength(int strength) {
         this.strength = strength;
     }
-
     public void setDefence(int defence) {
         this.defence = defence;
     }
