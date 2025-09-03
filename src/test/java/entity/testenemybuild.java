@@ -9,7 +9,7 @@ public class testenemybuild {
     private String displayArt = "Monster Artwork: \n";
     private String displayStats = "Monster Stats: \n";
     @Test
-    void GoblinDisplauArtTest() {
+    void GoblinDisplayArtTest() {
         Monster goblin = new Goblin();
         System.out.println(displayArt + goblin.getArt());
     }
