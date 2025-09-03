@@ -1,21 +1,8 @@
-
+import encounters.Goblin;
 
 public class Main {
     public static void main(String[] args) {
-        String goblinArt =
-                """
-                                   ,      ,
-                                  /(.-""-.)\\
-                              |\\  \\/      \\/  /|
-                              | \\ / =.  .= \\ / |
-                              \\( \\   o\\/o   / )/
-                               \\_, '-/  \\-' ,_/
-                                 /   \\__/   \\
-                                 \\ \\__/\\__/ /
-                               ___\\ \\|--|/ /___
-                             /`    \\      /    `\\
-                            /       '----'       \\""";
-
-        System.out.println(goblinArt);
+        Goblin goblin = new Goblin();
+        System.out.println(goblin.getGoblinArt());
     }
 }
