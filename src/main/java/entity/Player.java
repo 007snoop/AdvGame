@@ -3,11 +3,8 @@ package entity;
 import java.util.Random;
 
 public class Player {
-    private String name;
-    private int health;
-    private int attack;
-    private int strength;
-    private int defence;
+    protected String name;
+    protected int health, attack, strength, defence;
 
     public Player(String name) {
         this.name = name;

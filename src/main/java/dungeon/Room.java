@@ -11,6 +11,8 @@ public class Room {
     private Random rand = new Random();
     private final String desc;
     private final MonsterFactory mf;
+
+    // room list
     private static final String[] ROOM_DESC = {
             "a dark, damp cave with dripping water",
             "a torch-lit hall with strange carvings",
