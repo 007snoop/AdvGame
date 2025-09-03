@@ -12,6 +12,11 @@ public class Room {
     private final String desc;
     private final MonsterFactory mf;
 
+    // grid attributes
+    private char[][] grid;
+    private boolean[][] explored;
+    private int width, height;
+
     // room list
     public static final String[] ROOM_DESC = {
             "a dark, damp cave with dripping water",
@@ -53,6 +58,15 @@ public class Room {
         this.mf = mf;
     }
 
+    public Room(String desc, MonsterFactory mf, int width, int height) {
+        this(desc, mf);
+        this.width = width;
+        this.height = height;
+        this.grid = new char[height][width];
+        this.explored = new boolean[height][width];
+        initializeGrid();
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -69,4 +83,36 @@ public class Room {
             System.out.println("The room is empty... for now.");
         }
     }
+
+    private void initializeGrid() {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (y == 0 || y == height - 1 || x == 0 || x == width - 1) {
+                    grid[y][x] = '#'; // walls
+                } else {
+                    grid[y][x] = '_'; // floors
+                }
+            }
+        }
+        int mx = rand.nextInt(width - 2) + 1;
+        int my = rand.nextInt(height -2) + 1;
+        grid[my][mx] = 'E';
+    }
+
+    public void display(Player player) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (y == player.getY() && player.getX()) {
+                    System.out.print('@');
+                    explored[y][x] = true;
+                } else if (!explored[y][x]) {
+                    System.out.print('?'); // fog
+                } else {
+                    System.out.print(grid[y][x]);
+                }
+            }
+            System.out.println();
+        }
+    }
+
 }
