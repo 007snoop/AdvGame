@@ -13,6 +13,8 @@ public class Room {
     private Random rand = new Random();
     private final String desc;
     private final MonsterFactory mf;
+    private Monster boss;
+
 
     // grid attributes
     private char[][] grid;
@@ -117,14 +119,27 @@ public class Room {
         return desc;
     }
 
+    public void setBoss(Monster boss) {
+        this.boss = boss;
+    }
+
+    public Monster getBoss() {
+        return boss;
+    }
+
     public List<String> enter(Player player) {
         List<String> messages = new ArrayList<>();
+
 
         //enter the dungeons
         messages.add("You enter the room: " + desc);
 
         //check if there is an encounter
-        if (Math.random() < 0.33) {
+        if (boss != null) {
+            messages.add("A mighty " + boss.getName() + " appears!");
+            messages.addAll(CombatEngine.fight(player, boss, 1)); // sets action again needs to change
+            boss = null; // boss defeated remove from room.
+        } else if (Math.random() < 0.33) {
             Monster monster = mf.getRandomMonster();
             messages.add("A " + monster.getName() + " appears!");
             messages.addAll(CombatEngine.fight(player, monster, 1)); //** needs to be changed later to a choice **//

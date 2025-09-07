@@ -1,5 +1,7 @@
 package core;
 
+import dungeon.Dungeon;
+import dungeon.Room;
 import encounters.Bandit;
 import encounters.Goblin;
 import encounters.GoblinKing;
@@ -12,15 +14,15 @@ import java.util.function.Supplier;
 * */
 public class MonsterFactory {
     private Random rand = new Random();
-    private static final List<Supplier<Monster>> monsters = List.of(
+    private static final List<Supplier<Monster>> regMonsters = List.of(
             Goblin::new,
-            Bandit::new/*,
-            GoblinKing::new */
+            Bandit::new
             // add more here
     );
 
     public Monster getRandomMonster() {
-        return monsters.get(rand.nextInt(monsters.size())).get();
+        return regMonsters.get(rand.nextInt(regMonsters.size())).get();
     }
 
+    public Monster getBossMonster() { return new GoblinKing(); }
 }

@@ -1,6 +1,7 @@
 package dungeon;
 
 import core.MonsterFactory;
+import entity.Monster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,15 @@ public class Dungeon {
             if (availableDesc.isEmpty()) break;
             int index = rand.nextInt(availableDesc.size());
             String desc = availableDesc.remove(index);
+
+
+            //boss room
+            Room bossRoom = new Room(desc, mf);
+            if (i == roomCount -1) {
+                Monster boss = mf.getBossMonster();
+                bossRoom.setBoss(boss);
+            }
+
             room.add(new Room(desc, mf));
         }
     }
