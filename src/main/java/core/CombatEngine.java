@@ -16,13 +16,13 @@ public class CombatEngine {
 
         //player turn
         switch (chosenAction) {
-            case 1 -> messages.add(atkAct.playerAttack(player, monster));
+            case 1 -> messages.add(atkAct.playerAttack(player, monster).getMessage());
             default -> messages.add("Invalid Action.\n");
         }
 
         //monster turn if alive
         if (monster.isAlive()) {
-            messages.add(atkAct.monsterAttack(monster, player));
+            messages.add(atkAct.monsterAttack(monster, player).getMessage());
         }
 
         //status

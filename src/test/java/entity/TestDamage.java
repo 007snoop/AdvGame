@@ -1,6 +1,7 @@
 package entity;
 
 import actions.AttackAction;
+import core.CombatResult;
 import entity.Monster;
 import entity.Player;
 import encounters.Goblin;
@@ -25,17 +26,17 @@ class TestDamage {
     @Test
     void testPlayerDealsDamage() {
         int originalHP = goblin.getHealth();
-        int damage = attackAction.playerAttack(player, goblin);
+        CombatResult damage = attackAction.playerAttack(player, goblin);
 
         // goblin HP should decrease by damage
-        assertEquals(originalHP - damage, goblin.getHealth());
+        assertEquals(originalHP - damage.getDamage(), goblin.getHealth());
 
         // damage cannot be negative
-        assertTrue(damage >= 0);
+        assertTrue(damage.getDamage() >= 0);
 
         // damage should never exceed player's max potential
         int maxDamage = player.getStrength() * 2;
-        assertTrue(damage <= maxDamage);
+        assertTrue(damage.getDamage() <= maxDamage);
     }
 
     @Test
@@ -44,24 +45,24 @@ class TestDamage {
         Monster tank = new Goblin();
         tank.setDefence(1000);
 
-        int damage = attackAction.playerAttack(player, tank);
-        assertEquals(0, damage);  // should miss
+        CombatResult damage = attackAction.playerAttack(player, tank);
+        assertEquals(0, damage.getDamage());  // should miss
         assertEquals(1000, tank.getDefence());
     }
 
     @Test
     void testMonsterDealsDamage() {
         int originalHP = player.getHealth();
-        int damage = attackAction.monsterAttack(goblin, player);
+        CombatResult damage = attackAction.monsterAttack(goblin, player);
 
         // player HP should decrease by damage
-        assertEquals(originalHP - damage, player.getHealth());
+        assertEquals(originalHP - damage.getDamage(), player.getHealth());
 
         // damage cannot be negative
-        assertTrue(damage >= 0);
+        assertTrue(damage.getDamage() >= 0);
 
         // damage should never exceed monster's max potential
         int maxDamage = goblin.getStrength() * 2;
-        assertTrue(damage <= maxDamage);
+        assertTrue(damage.getDamage() <= maxDamage);
     }
 }
