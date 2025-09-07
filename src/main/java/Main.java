@@ -12,7 +12,7 @@ public class Main {
         Room roomGrid = new Room("Test roomGrid", spawn, 8, 10);
 
 
-       /* System.out.println("Dungeon Rooms: \n");
+        System.out.println("Dungeon Rooms: \n");
 
         int roomNumber = 1;
 
@@ -29,7 +29,6 @@ public class Main {
                 break;
             }
         }
-*/
         System.out.println("Inital roomGrid: ");
         System.out.println(roomGrid.display(player));
 
