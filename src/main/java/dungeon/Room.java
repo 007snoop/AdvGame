@@ -5,6 +5,8 @@ import core.MonsterFactory;
 import entity.Monster;
 import entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Room {
@@ -115,17 +117,21 @@ public class Room {
         return desc;
     }
 
-    public void enter(Player player) {
-        System.out.println("\nYou enter the room: " + desc);
+    public List<String> enter(Player player) {
+        List<String> messages = new ArrayList<>();
 
-        // 33% encounter chance
+        //enter the dungeons
+        messages.add("You enter the room: " + desc);
+
+        //check if there is an encounter
         if (Math.random() < 0.33) {
             Monster monster = mf.getRandomMonster();
-            System.out.println("A " + monster.getName() + " appears!");
-            CombatEngine.fight(player,monster);
+            messages.add("A " + monster.getName() + " appears!");
+            messages.addAll(CombatEngine.fight(player, monster, 1)); //** needs to be changed later to a choice **//
         } else {
-            System.out.println("The room is empty... for now.");
+            messages.add("The room is empty... for now.");
         }
+        return messages;
     }
 
     private void initializeGrid() {
@@ -143,18 +149,22 @@ public class Room {
         grid[my][mx] = 'E';
     }
 
-    public void display(Player player) {
+    public String display(Player player) {
+        StringBuilder gridDisplay = new StringBuilder();
+
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (y == player.getY() && x == player.getX()) {
-                    System.out.print('@');
+                    gridDisplay.append('@');
                     explored[y][x] = true;
-                } else {
-                    System.out.print(grid[y][x]);
+                } else  {
+                    gridDisplay.append(grid[y][x]);
                 }
             }
-            System.out.println();
+            gridDisplay.append('\n');
         }
+        return gridDisplay.toString();
     }
 
     public boolean isWalkable(int x, int y) {

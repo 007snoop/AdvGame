@@ -31,10 +31,10 @@ public class Main {
         }
 */
         System.out.println("Inital roomGrid: ");
-        roomGrid.display(player);
+        System.out.println(roomGrid.display(player));
 
         System.out.println("\nMove right");
         player.move(1,0,roomGrid);
-        roomGrid.display(player);
+        System.out.println(roomGrid.display(player));
     }
 }
