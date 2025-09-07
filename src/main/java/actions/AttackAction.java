@@ -19,29 +19,19 @@ public class AttackAction {
         return Math.max(damage, 0);
       }
 
-      public int playerAttack(Player player, Monster monster) {
+      public String playerAttack(Player player, Monster monster) {
          int damage = resolveAttack(player.getAttack(), player.getStrength(), monster.getDefence());
 
-          if (damage == 0) {
-              System.out.println(player.getName() + " Misses.");
-          } else {
-              monster.takeDamage(damage);
-              System.out.println(player.getName() + " hits " + monster.getName() + " for " + damage + " points of " +
-                      "damage.");
-          }
-          return damage;
+          if (damage == 0) return player.getName() + " misses!";
+          monster.takeDamage(damage);
+          return player.getName() + " hits " + monster.getName() + " for " + damage + "!";
       }
 
-      public int monsterAttack(Monster monster, Player player) {
+      public String monsterAttack(Monster monster, Player player) {
           int damage = resolveAttack(monster.getAttack(), monster.getStrength(), player.getDefence());
 
-          if (damage == 0) {
-              System.out.println(monster.getName() + " Misses.");
-          } else {
-              player.takeDamage(damage);
-              System.out.println(monster.getName() + " hits " + player.getName() + " for " + damage + " points of " +
-                      "damage.");
-          }
-          return damage;
+          if (damage == 0) return monster.getName() + " misses!";
+          player.takeDamage(damage);
+          return monster.getName() + " hits " + player.getName() + " for " + damage + "!";
       }
 }

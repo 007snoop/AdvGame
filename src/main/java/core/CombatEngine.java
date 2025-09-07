@@ -4,36 +4,31 @@ import actions.AttackAction;
 import entity.Monster;
 import entity.Player;
 
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CombatEngine {
-    private static Scanner scanner = new Scanner(System.in);
-    private static AttackAction atkAct = new AttackAction();
 
-    public static void fight(Player player, Monster monster) {
-        while (player.isAlive() && monster.isAlive()) {
-            System.out.println("\nYour turn! Choose an action: ");
-            System.out.println("1. Attack");
+    private static final AttackAction atkAct = new AttackAction();
 
-            String choice = scanner.nextLine();
+    public static List<String> fight(Player player, Monster monster, int chosenAction) {
+        List<String> messages = new ArrayList<>();
 
-            switch (choice) {
-                case "1" -> atkAct.playerAttack(player, monster);
-                default -> System.out.println("Invalid choice.");
-            }
-
-            if (monster.isAlive()) {
-                atkAct.monsterAttack(monster, player);
-            }
-            System.out.println("\n[Status]");
-            System.out.println(player.getName() + " HP: " + player.getHealth());
-            System.out.println(monster.getName() + " HP: " + monster.getHealth());
-
+        //player turn
+        switch (chosenAction) {
+            case 1 -> messages.add(atkAct.playerAttack(player, monster));
+            default -> messages.add("Invalid Action.\n");
         }
-        if (player.isAlive()) {
-            System.out.println("\nYou defeated the " + monster.getName() + "!");
-        } else {
-            System.out.println("\nYou were slain by the " + monster.getName() + "...");
+
+        //monster turn if alive
+        if (monster.isAlive()) {
+            messages.add(atkAct.monsterAttack(monster, player));
         }
+
+        //status
+        messages.add(player.getName() + " HP: " + player.getHealth());
+        messages.add(monster.getName() + " HP: " + monster.getHealth());
+
+        return messages;
     }
 }
