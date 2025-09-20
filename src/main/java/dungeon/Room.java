@@ -170,43 +170,43 @@ public class Room {
     }
 
     public void render(Screen screen, Player player) throws IOException {
-        screen.clear();
         TextGraphics tg = screen.newTextGraphics();
 
-        int fovRad = 3;
+        int fovRad = 3; // field of vision radius
 
+        // Draw the room only in rows 0.height-1
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 char ch = grid[y][x];
-                TextColor fg = null;
+                TextColor fg = switch (ch) {
+                    case '#' -> TextColor.ANSI.WHITE;   // walls
+                    case 'E' -> TextColor.ANSI.RED;     // enemy
+                    case '~' -> TextColor.ANSI.BLUE;    // water
+                    case '_' -> TextColor.ANSI.GREEN;   // floor
+                    default -> TextColor.ANSI.WHITE;
+                };
 
-                if (ch == '#') fg = TextColor.ANSI.WHITE;
-                else if (ch == 'E') fg = TextColor.ANSI.RED;
-                else if (ch == '~') fg = TextColor.ANSI.BLUE;
-                else if (ch == '_') fg = TextColor.ANSI.GREEN;
-
+                // Determine visibility based on FOV
                 boolean visible = Math.abs(player.getX() - x) <= fovRad &&
                         Math.abs(player.getY() - y) <= fovRad;
 
                 if (visible) explored[y][x] = true;
 
-                if (!explored[y][x]){
-                    ch = ' ';
-                }
+                if (!explored[y][x]) ch = ' '; // hide unexplored tiles
 
-                if (y == player.getY() && x == player.getX()) {
+                // Draw player
+                if (x == player.getX() && y == player.getY()) {
                     ch = '@';
                     fg = TextColor.ANSI.YELLOW;
                     explored[y][x] = true;
-
                 }
 
-                screen.setCharacter(x, y,
-                        new TextCharacter(ch, fg, TextColor.ANSI.BLACK));
+                // Draw character on screen at correct position
+                tg.setCharacter(x, y, new TextCharacter(ch, fg, TextColor.ANSI.BLACK));
             }
         }
-        screen.refresh();
     }
+
 
     public boolean isWalkable(int x, int y) {
         if (x < 0 || x >= width || y < 0 || y >= height) return false;
