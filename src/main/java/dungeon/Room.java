@@ -1,10 +1,12 @@
 package dungeon;
 
+import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor;
 import core.CombatEngine;
 import core.MonsterFactory;
 import entity.Monster;
 import entity.Player;
-
+import com.googlecode.lanterna.screen.Screen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -164,22 +166,29 @@ public class Room {
         grid[my][mx] = 'E';
     }
 
-    public String display(Player player) {
-        StringBuilder gridDisplay = new StringBuilder();
-
+    public void render(Screen screen, Player player) {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
+                char ch;
+
                 if (y == player.getY() && x == player.getX()) {
-                    gridDisplay.append('@');
+                    ch = '@';
                     explored[y][x] = true;
-                } else  {
-                    gridDisplay.append(grid[y][x]);
+                    screen.setCharacter(x,y,
+                            new TextCharacter('@', TextColor.ANSI.YELLOW, TextColor.ANSI.BLACK));
+                } else {
+                    ch = (grid[y][x]);
+
+                    TextColor fg = TextColor.ANSI.WHITE;
+                    if (ch == '~') fg = TextColor.ANSI.BLUE;
+                    if (ch == '#') fg = TextColor.ANSI.WHITE;
+
+                    screen.setCharacter(x,y,
+                            new TextCharacter(ch, fg, TextColor.ANSI.BLACK));
                 }
             }
-            gridDisplay.append('\n');
         }
-        return gridDisplay.toString();
     }
 
     public boolean isWalkable(int x, int y) {
