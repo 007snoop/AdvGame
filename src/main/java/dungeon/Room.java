@@ -2,11 +2,14 @@ package dungeon;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import core.CombatEngine;
 import core.MonsterFactory;
 import entity.Monster;
 import entity.Player;
 import com.googlecode.lanterna.screen.Screen;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -166,29 +169,34 @@ public class Room {
         grid[my][mx] = 'E';
     }
 
-    public void render(Screen screen, Player player) {
+    public void render(Screen screen, Player player) throws IOException {
+        screen.clear();
+        TextGraphics tg = screen.newTextGraphics();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                char ch;
+                char ch = grid[y][x];
+                TextColor fg = TextColor.ANSI.WHITE;
+
+                if (ch == '~') fg = TextColor.ANSI.BLUE;
+                if (ch == '#') fg = TextColor.ANSI.WHITE;
+                if (ch == '_') fg = TextColor.ANSI.GREEN;
+
+                if (!explored[y][x]){
+                    ch = ' ';
+                }
 
                 if (y == player.getY() && x == player.getX()) {
                     ch = '@';
+                    fg = TextColor.ANSI.YELLOW;
                     explored[y][x] = true;
-                    screen.setCharacter(x,y,
-                            new TextCharacter('@', TextColor.ANSI.YELLOW, TextColor.ANSI.BLACK));
-                } else {
-                    ch = (grid[y][x]);
 
-                    TextColor fg = TextColor.ANSI.WHITE;
-                    if (ch == '~') fg = TextColor.ANSI.BLUE;
-                    if (ch == '#') fg = TextColor.ANSI.WHITE;
-
-                    screen.setCharacter(x,y,
-                            new TextCharacter(ch, fg, TextColor.ANSI.BLACK));
                 }
+
+                screen.setCharacter(x, y, new TextCharacter(ch, fg, TextColor.ANSI.BLACK));
             }
         }
+        screen.refresh();
     }
 
     public boolean isWalkable(int x, int y) {

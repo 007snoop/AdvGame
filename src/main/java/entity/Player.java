@@ -1,12 +1,13 @@
 package entity;
 
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import dungeon.Room;
-
-import java.util.Random;
 
 public class Player {
     protected String name;
     protected int health, attack, strength, defence, y, x;
+
 
     public Player(String name) {
         this.name = name;
@@ -84,6 +85,20 @@ public class Player {
             y = newY;
         } else {
             System.out.println("Cannot move there.");
+        }
+    }
+
+    public void handleInput(KeyStroke key, Room room) {
+        if (key.getKeyType()== KeyType.Character) {
+            Character c = key.getCharacter();
+
+            if (c == null) return;
+            switch (c) {
+                case 'w' -> move(0, -1, room);
+                case 's' -> move(0, 1, room);
+                case 'a' -> move(-1, 0, room);
+                case 'd' -> move(1, 0, room);
+            }
         }
     }
 }
