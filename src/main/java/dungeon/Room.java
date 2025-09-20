@@ -19,6 +19,7 @@ public class Room {
     private final String desc;
     private final MonsterFactory mf;
     private Monster boss;
+    private int maxRenderWidth = 75;
 
 
     // grid attributes
@@ -112,6 +113,14 @@ public class Room {
         return width;
     }
 
+    public int getMaxRenderWidth() {
+        return maxRenderWidth;
+    }
+
+    public void setMaxRenderWidth(int maxRenderWidth) {
+        this.maxRenderWidth = maxRenderWidth;
+    }
+
     public MonsterFactory getMf() {
         return mf;
     }
@@ -164,52 +173,66 @@ public class Room {
                 }
             }
         }
-        int mx = rand.nextInt(width - 2) + 1;
+
+        int renderableWidth = Math.min(width, maxRenderWidth); // keeps enemy inside bounds
+
+        int mx = rand.nextInt(renderableWidth - 2) + 1;
         int my = rand.nextInt(height -2) + 1;
         grid[my][mx] = 'E';
     }
 
     public void render(Screen screen, Player player) throws IOException {
-        screen.clear();
         TextGraphics tg = screen.newTextGraphics();
 
-        int fovRad = 3;
+        int fovRad = 3; // field of vision radius
+        // max cap for width
+        int renderWidth = Math.min(width, maxRenderWidth);
 
+        // Draw the room only in rows 0.height-1
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                char ch = grid[y][x];
-                TextColor fg = null;
+            for (int x = 0; x < renderWidth; x++) {
+                char ch;
+                if (y == 0 || y == height -1 || x == 0 || x == renderWidth -1 ) {
+                    ch = '#';
+                } else {
+                    ch = grid[y][x];
+                }
+                TextColor fg = switch (ch) {
+                    case '#' -> TextColor.ANSI.WHITE;   // walls
+                    case 'E' -> TextColor.ANSI.RED;     // enemy
+                    case '~' -> TextColor.ANSI.BLUE;    // water
+                    case '_' -> TextColor.ANSI.GREEN;   // floor
+                    default -> TextColor.ANSI.WHITE;
+                };
 
-                if (ch == '#') fg = TextColor.ANSI.WHITE;
-                else if (ch == 'E') fg = TextColor.ANSI.RED;
-                else if (ch == '~') fg = TextColor.ANSI.BLUE;
-                else if (ch == '_') fg = TextColor.ANSI.GREEN;
-
+                // Determine visibility based on FOV
                 boolean visible = Math.abs(player.getX() - x) <= fovRad &&
                         Math.abs(player.getY() - y) <= fovRad;
 
                 if (visible) explored[y][x] = true;
 
-                if (!explored[y][x]){
-                    ch = ' ';
-                }
+                if (!explored[y][x]) ch = ' '; // hide unexplored tiles
 
-                if (y == player.getY() && x == player.getX()) {
+                // Draw player
+                if (x == player.getX() && y == player.getY()) {
                     ch = '@';
                     fg = TextColor.ANSI.YELLOW;
                     explored[y][x] = true;
-
                 }
 
-                screen.setCharacter(x, y,
-                        new TextCharacter(ch, fg, TextColor.ANSI.BLACK));
+                // Draw character on screen at correct position
+                tg.setCharacter(x, y, new TextCharacter(ch, fg, TextColor.ANSI.BLACK));
             }
         }
-        screen.refresh();
     }
 
+
     public boolean isWalkable(int x, int y) {
-        if (x < 0 || x >= width || y < 0 || y >= height) return false;
+
+        int maxX = Math.min(width, maxRenderWidth) - 1;
+        int maxY = height -1;
+
+        if (x < 0 || x >= maxX || y < 0 || y >= maxY) return false;
         char tile = grid[y][x];
         return tile == '_';
     }

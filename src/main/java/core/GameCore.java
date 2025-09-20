@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class GameCore {
+    public static final int UI_BUFFER = 5;
     private final Player player;
     private final Dungeon dungeon;
     private Screen screen;
@@ -29,9 +30,16 @@ public class GameCore {
     }
 
     // Initialize the terminal and screen
-    public void initScreen() throws IOException {
-        Terminal terminal = new DefaultTerminalFactory().createTerminal();
-        this.screen = new TerminalScreen(terminal);
+    public void initScreen(Room room) throws IOException {
+        // set w h
+        int w = room.getWidth();
+        int h = room.getHeight() + UI_BUFFER;
+
+        Terminal terminal = new DefaultTerminalFactory()
+                .setInitialTerminalSize(new TerminalSize(w,h))
+                .createTerminal();
+
+        screen = new TerminalScreen(terminal);
         screen.startScreen();
         screen.setCursorPosition(null); // hide cursor
 
@@ -47,12 +55,15 @@ public class GameCore {
         // Get the current room
         Room curRoom = dungeon.getRooms().get(curRoomIndex);
 
+
         // Main loop
         while (running) {
+            screen.clear();
             // Render the room
             curRoom.render(screen, player);
+            // Render UI below dungeon
+            renderUI(curRoom);
             screen.refresh();
-
             // Read player input
             KeyStroke key = screen.readInput();
             if (key != null) {
@@ -61,6 +72,37 @@ public class GameCore {
         }
 
         screen.stopScreen();
+    }
+
+    // Render player status bar
+    private void renderUI(Room room) {
+        TextGraphics tg = screen.newTextGraphics();
+        int uiStartY = room.getHeight(); // start drawing below the room
+        int legendX = room.getMaxRenderWidth() + 2; // start of legend.
+
+        int cols = screen.getTerminalSize().getColumns();
+
+        // Clear UI area
+        for (int i = 0; i < UI_BUFFER; i++) {
+            tg.setForegroundColor(TextColor.ANSI.BLACK);
+            tg.putString(0, uiStartY + i, " ".repeat(cols));
+        }
+
+        // Draw player stats under map
+        tg.setForegroundColor(TextColor.ANSI.WHITE);
+        tg.putString(0, uiStartY, "HP: " + player.getHealth());
+        tg.putString(0, uiStartY + 1, "ATK: " + player.getAttack() +
+                " | STR: " + player.getStrength() +
+                " | DEF: " + player.getDefence());
+        tg.putString(0, uiStartY + 2, "Current room: " + room.getDesc());
+
+        // Draw legend to the right
+        tg.putString(legendX, 0, "Legend:");
+        tg.putString(legendX, 1, "# = Wall");
+        tg.putString(legendX, 2, "_ = Floor");
+        tg.putString(legendX, 3, "~ = Water");
+        tg.putString(legendX, 4, "E = Enemy");
+        tg.putString(legendX, 5, "@ = Player");
     }
 
     // Handle player input
