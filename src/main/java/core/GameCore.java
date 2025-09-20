@@ -77,23 +77,32 @@ public class GameCore {
     // Render player status bar
     private void renderUI(Room room) {
         TextGraphics tg = screen.newTextGraphics();
-        int uiStart = room.getHeight(); // start drawing below the room
+        int uiStartY = room.getHeight(); // start drawing below the room
+        int legendX = room.getMaxRenderWidth() + 2; // start of legend.
 
         int cols = screen.getTerminalSize().getColumns();
 
         // Clear UI area
         for (int i = 0; i < UI_BUFFER; i++) {
             tg.setForegroundColor(TextColor.ANSI.BLACK);
-            tg.putString(0, uiStart + i, " ".repeat(cols));
+            tg.putString(0, uiStartY + i, " ".repeat(cols));
         }
 
-        // Draw player stats
+        // Draw player stats under map
         tg.setForegroundColor(TextColor.ANSI.WHITE);
-        tg.putString(0, uiStart, "HP: " + player.getHealth());
-        tg.putString(0, uiStart + 1, "ATK: " + player.getAttack() +
+        tg.putString(0, uiStartY, "HP: " + player.getHealth());
+        tg.putString(0, uiStartY + 1, "ATK: " + player.getAttack() +
                 " | STR: " + player.getStrength() +
                 " | DEF: " + player.getDefence());
-        tg.putString(0, uiStart + 2, "Current room: " + room.getDesc());
+        tg.putString(0, uiStartY + 2, "Current room: " + room.getDesc());
+
+        // Draw legend to the right
+        tg.putString(legendX, 0, "Legend:");
+        tg.putString(legendX, 1, "# = Wall");
+        tg.putString(legendX, 2, "_ = Floor");
+        tg.putString(legendX, 3, "~ = Water");
+        tg.putString(legendX, 4, "E = Enemy");
+        tg.putString(legendX, 5, "@ = Player");
     }
 
     // Handle player input
