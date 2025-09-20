@@ -173,14 +173,22 @@ public class Room {
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
 
+        int fovRad = 3;
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 char ch = grid[y][x];
                 TextColor fg = TextColor.ANSI.WHITE;
 
-                if (ch == '~') fg = TextColor.ANSI.BLUE;
                 if (ch == '#') fg = TextColor.ANSI.WHITE;
-                if (ch == '_') fg = TextColor.ANSI.GREEN;
+                else if (ch == 'E') fg = TextColor.ANSI.RED;
+                else if (ch == '~') fg = TextColor.ANSI.BLUE;
+                else if (ch == '_') fg = TextColor.ANSI.GREEN;
+
+                boolean visible = Math.abs(player.getX() - x) <= fovRad &&
+                        Math.abs(player.getY() - y) <= fovRad;
+
+                if (visible) explored[y][x] = true;
 
                 if (!explored[y][x]){
                     ch = ' ';
@@ -193,7 +201,8 @@ public class Room {
 
                 }
 
-                screen.setCharacter(x, y, new TextCharacter(ch, fg, TextColor.ANSI.BLACK));
+                screen.setCharacter(x, y,
+                        new TextCharacter(ch, fg, TextColor.ANSI.BLACK));
             }
         }
         screen.refresh();

@@ -1,10 +1,4 @@
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
-import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
+
 import core.GameCore;
 import core.MonsterFactory;
 import dungeon.Dungeon;
@@ -19,9 +13,9 @@ public class Main {
         Player player = new Player("Hero");
         /*Monster goblin = new Goblin();*/
         MonsterFactory spawn = new MonsterFactory();
-        Dungeon dungeon = new Dungeon(spawn, 5);
-        Room room = new Room("Test room", spawn, 20,10);
-        GameCore game = new GameCore(player, room);
+        Dungeon dungeon = new Dungeon(spawn, 5, 20, 10);
+       /* Room room = new Room("Test room", spawn, 20,10);*/
+        GameCore game = new GameCore(player, dungeon);
         game.initScreen();
         game.run();
 

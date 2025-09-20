@@ -8,29 +8,26 @@ import java.util.List;
 import java.util.Random;
 
 public class Dungeon {
-    private List<Room> room = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
     private Random rand = new Random();
 
-    public Dungeon(MonsterFactory mf, int roomCount) {
+    public Dungeon(MonsterFactory mf, int roomCount, int w, int h) {
         List<String> availableDesc = new ArrayList<>(List.of(Room.ROOM_DESC));
         for (int i = 0; i < roomCount; i++) {
             if (availableDesc.isEmpty()) break;
             int index = rand.nextInt(availableDesc.size());
             String desc = availableDesc.remove(index);
 
-
-            //boss room
-            Room bossRoom = new Room(desc, mf);
+            Room room = new Room(desc, mf, w, h);
             if (i == roomCount -1) {
                 Monster boss = mf.getBossMonster();
-                bossRoom.setBoss(boss);
+                room.setBoss(boss);
             }
-
-            room.add(new Room(desc, mf));
+            rooms.add(room);
         }
     }
 
-    public List<Room> getRoom() {
-        return room;
+    public List<Room> getRooms() {
+        return rooms;
     }
 }
