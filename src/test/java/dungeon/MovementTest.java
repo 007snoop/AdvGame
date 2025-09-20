@@ -16,8 +16,23 @@ public class MovementTest {
     Player player = new Player("Hero");
     Monster goblin = new Goblin();
     MonsterFactory spawn = new MonsterFactory();
-    Dungeon dungeon = new Dungeon(spawn, 5);
-    Room room = new Room("Test room", spawn, 12,10);
+    Dungeon dungeon = new Dungeon(spawn, 5, 100, 100);
+  /*  Room room = new Room("Test room", spawn, 12,10);*/
+    Room room;
+
+
+    @BeforeEach
+    public void setup() {
+
+        player = new Player("Hero");
+
+        // create a simple 5x5 room for testing
+        room = new Room("Test Room", new MonsterFactory(), 5, 5);
+
+        // place player in (1,1) for consistency
+        player.setX(1);
+        player.setY(1);
+    }
 
     @Test
     @DisplayName("Player starting location")

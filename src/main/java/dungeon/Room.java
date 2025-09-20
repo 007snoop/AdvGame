@@ -178,7 +178,7 @@ public class Room {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 char ch = grid[y][x];
-                TextColor fg = TextColor.ANSI.WHITE;
+                TextColor fg = null;
 
                 if (ch == '#') fg = TextColor.ANSI.WHITE;
                 else if (ch == 'E') fg = TextColor.ANSI.RED;
